@@ -1,6 +1,6 @@
 
 import Ember from 'ember';
-import { getAllStores } from '../emflux/dispatcher';
+import { getAllStores } from '../dispatcher';
 
 export default Ember.Service.extend({
     init() {
