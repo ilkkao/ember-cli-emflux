@@ -1,12 +1,10 @@
 # Ember-cli-emflux
 
-This README outlines the details of collaborating on this Ember addon.
+Flux library for Ember
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+`npm install --save-dev ember-cli-emflux`
 
 ## Running
 
