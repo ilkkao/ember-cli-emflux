@@ -75,7 +75,47 @@ export default Store.extend({
 });
 ```
 
+All modules in `/stores` directory are automatically instantiated and registered as store object singletons when the Ember app starts.
+
 ## API
+
+### dispatcher
+
+#### ```dispatcher(name, params, acceptCb, rejectCb)```
+
+#### Parameters
+
+```type``` (string, mandatory) Action name, can contain uppercase characters and underscore.
+
+```params``` (hash, optional) Parameter hash that will be given to the action handler in the store.
+
+```acceptCb``` (function, optional) Callback that the action handler can call if it considers the action as accepted.
+
+```rejectedCb``` (function, optional) Callback that the action handler can call if it considers the action as rejected.
+
+#### Return value
+
+-
+
+#### ```getStore(name)```
+
+#### Parameters
+
+```name``` (string, mandatory) Store name.
+
+#### Return value
+
+Store singleton object or `null` if the store doesn't exist.
+
+#### `getAllStores()`
+
+#### Parameters
+
+-
+
+#### Return value
+
+An array containing JavaScript objects with two keys, `name` (string) and `store` (reference to singleton).
 
 ## Running Tests
 
