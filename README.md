@@ -1,6 +1,6 @@
 # Ember-cli-emflux
 
-Flux library for Ember
+[Flux](https://facebook.github.io/flux/) library for Ember
 
 [![Build Status](https://secure.travis-ci.org/ilkkao/ember-cli-emflux.png)](http://travis-ci.org/ilkkao/ember-cli-emflux)
 
@@ -77,13 +77,22 @@ export default Store.extend({
 
 All modules in `/stores` directory are automatically instantiated and registered as store object singletons when the Ember app starts.
 
+`dispatch()` will call matching handler functions from all stores. `ADD_ARTICLE_COMMENT` event is handled by `handleAddArticleEvent` method.
+
+To get the most benefits from flux architecture in Ember app:
+
+- Don't add any logic to Ember controllers.
+- Don't set any models in Ember routes.
+- Use Ember actions only between child and parent component when no other component or server doesn't need to know about it. In practice you probably need Ember actions rarely.
+- Don't mutate store data in components (D'oh!)
+
 ## API
 
-### dispatcher
+### dispatcher:
 
-#### ```dispatcher(name, params, acceptCb, rejectCb)```
+#### ```dispatch(name, params, acceptCb, rejectCb)```
 
-#### Parameters
+##### Parameters
 
 ```type``` (string, mandatory) Action name, can contain uppercase characters and underscore.
 
@@ -93,27 +102,27 @@ All modules in `/stores` directory are automatically instantiated and registered
 
 ```rejectedCb``` (function, optional) Callback that the action handler can call if it considers the action as rejected.
 
-#### Return value
+##### Return value
 
--
+none
 
 #### ```getStore(name)```
 
-#### Parameters
+##### Parameters
 
 ```name``` (string, mandatory) Store name.
 
-#### Return value
+##### Return value
 
 Store singleton object or `null` if the store doesn't exist.
 
 #### `getAllStores()`
 
-#### Parameters
+##### Parameters
 
--
+none
 
-#### Return value
+##### Return value
 
 An array containing JavaScript objects with two keys, `name` (string) and `store` (reference to singleton).
 
