@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-emflux",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Flux library for Ember",
   "directories": {
     "doc": "doc",
