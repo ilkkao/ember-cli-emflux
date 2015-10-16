@@ -1,45 +1,32 @@
 
 import Ember from 'ember';
-import Resolver from 'ember/resolver';
 
 const noopCb = () => {};
 
-let myResolver = Resolver.create();
-let failure = false;
+let dispatcherOnline = false;
 let stores = [];
+let pendingActions = [];
 
-for (let module of Object.keys(require.entries)) {
-    let [ firstLevel, secondLevel, thirdLevel ] = module.split('/');
-
-    if (secondLevel === 'stores') {
-        let storeClass = require(module)['default'];
-        let store = storeClass.create();
-        let name = thirdLevel;
-
-        stores.push({
-            store: store,
-            name: name
-        });
-
-        store.loadSnapshot();
-
-        Ember.Logger.info(`[${name}-store] Registered.`);
-    }
-}
+init();
 
 export function dispatch(type, data = {}, acceptCb = noopCb, rejectCb = noopCb) {
     let consumed = false;
     let name = type.split('_').map(part => part.toLowerCase().capitalize()).join('');
     let handler = `handle${name}`;
 
+    if (!dispatcherOnline) {
+        pendingActions.push({ type: type, data: data, acceptCb: acceptCb, rejectCb: rejectCb });
+        return;
+    }
+
     for (let store of stores) {
         let storeObj = store.store;
 
         if (storeObj[handler]) {
             consumed = true;
-            storeObj[handler].call(storeObj, data, acceptCb, rejectCb);
-            Ember.Logger.info(`[ACT] ${type}`);
-            break;
+
+            let result = storeObj[handler].call(storeObj, data, acceptCb, rejectCb);
+            Ember.Logger.info(`[${store.name}-store] Consumed action ${type}.`);
         }
     }
 
@@ -62,10 +49,34 @@ export function getAllStores() {
     return stores;
 }
 
-// TODO: run.next() is probably not needed
+function init() {
+    for (let module of Object.keys(require.entries)) {
+        let [ firstLevel, secondLevel, thirdLevel ] = module.split('/');
 
-Ember.run.next(this, function() { // Give ember time to start
-    if (!failure) {
-        dispatch('START');
+        if (secondLevel === 'stores') {
+            let storeClass = require(module)['default'];
+
+            if (!storeClass || typeof storeClass.create !== "function") {
+                break;
+            }
+
+            let store = storeClass.create();
+            let name = thirdLevel;
+
+            stores.push({
+                store: store,
+                name: name
+            });
+
+            Ember.Logger.info(`[${name}-store] Registered.`);
+        }
+
+        dispatcherOnline = true;
+
+        for (let action of pendingActions) {
+            dispatch(action.type, action.data, action.acceptCb, action.rejectCb);
+        }
+
+        pendingActions.clear();
     }
-});
+}

@@ -5,6 +5,8 @@ let localStorageSupported = typeof Storage !== 'undefined';
 
 export default Ember.Object.extend({
     init() {
+        this.loadSnapshot();
+
         if (localStorageSupported) {
             setInterval(function() {
                 Ember.run.next(this, this._saveSnapshot);
