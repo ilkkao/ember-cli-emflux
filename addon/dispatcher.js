@@ -60,15 +60,13 @@ function init() {
                 break;
             }
 
-            let store = storeClass.create();
             let name = thirdLevel;
+            let store = storeClass.create({ _storeName: name });
 
             stores.push({
                 store: store,
                 name: name
             });
-
-            store.set('_name', name);
 
             Ember.Logger.info(`[${name}-store] Registered.`);
         }

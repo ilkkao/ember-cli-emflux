@@ -17,7 +17,7 @@ export default Ember.Object.extend({
     },
 
     _loadSnapshot() {
-        let name = this.get('_name');
+        let name = this.get('_storeName');
         let data;
 
         Ember.Logger.info(`[${name}-store] Starting to load saved snapshot.`);
@@ -45,7 +45,7 @@ export default Ember.Object.extend({
     },
 
     _saveSnapshot() {
-        let name = this.get('_name');
+        let name = this.get('_storeName');
         let data = this.toJSON();
 
         try {
