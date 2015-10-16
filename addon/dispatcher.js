@@ -68,6 +68,8 @@ function init() {
                 name: name
             });
 
+            store.set('_name', name);
+
             Ember.Logger.info(`[${name}-store] Registered.`);
         }
 

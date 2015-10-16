@@ -4,62 +4,55 @@ import Ember from 'ember';
 let localStorageSupported = typeof Storage !== 'undefined';
 
 export default Ember.Object.extend({
-    init() {
-        this.loadSnapshot();
+    _snapshotInterval: 60 * 1000, // 1 minute
 
-        if (localStorageSupported) {
-            setInterval(function() {
+    init() {
+        if (localStorageSupported && this.toJSON && this.fromJSON) {
+            this._loadSnapshot();
+
+            setInterval(() => {
                 Ember.run.next(this, this._saveSnapshot);
-            }.bind(this), 60 * 1000); // Once in a minute
+            }, this.get('_snapshotInterval'));
         }
     },
 
-    loadSnapshot() {
-        if (!this.fromJSON || !localStorageSupported) {
-            return;
-        }
-
+    _loadSnapshot() {
+        let name = this.get('_name');
         let data;
-        let name = this.get('name');
 
-        Ember.Logger.info(`Starting to load saved snapshot: ${name}`);
+        Ember.Logger.info(`[${name}-store] Starting to load saved snapshot.`);
 
         try {
             data = JSON.parse(window.localStorage.getItem(name));
 
             if (!data) {
-                Ember.Logger.info('Snapshot not found.');
+                Ember.Logger.info(`[${name}-store] Snapshot not found.`);
                 return false;
             }
 
-            Ember.Logger.info('Snapshot loaded.');
-
             if (data.userId !== this.get('userId') || data.version !== 1) {
-                Ember.Logger.info('Snapshot corrupted.');
+                Ember.Logger.info(`[${name}-store] Snapshot corrupted.`);
                 window.localStorage.removeItem('data');
                 return false;
             }
 
             this.fromJSON(data)
 
-            Ember.Logger.info('Snapshot processed.');
+            Ember.Logger.info('[${name}-store] Snapshot loaded and processed.');
         } catch (e) {
-            Ember.Logger.info(`Failed to load or validate snapshot: ${e}`);
+            Ember.Logger.info(`[${name}-store] Failed to load or validate snapshot, error: ${e}`);
         }
     },
 
     _saveSnapshot() {
-        if (!this.toJSON || !this.get('initDone')) {
-            return;
-        }
-
+        let name = this.get('_name');
         let data = this.toJSON();
 
         try {
             window.localStorage.setItem(this.get('name'), JSON.stringify(data));
-            Ember.Logger.info('Snapshot saved.');
+            Ember.Logger.info('[${name}-store] Snapshot saved.');
         } catch (e) {
-            Ember.Logger.info(`Failed to save snapshot: ${e}`);
+            Ember.Logger.info(`[${name}-store] Failed to save snapshot, error: ${e}`);
         }
     }
 });
