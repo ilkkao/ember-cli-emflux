@@ -3,6 +3,7 @@ tests/
 tmp/
 dist/
 
+.eslintrc
 .bowerrc
 .editorconfig
 .ember-cli
