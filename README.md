@@ -2,11 +2,13 @@
 
 Flux library for Ember
 
+[![Build Status](https://secure.travis-ci.org/ilkkao/ember-cli-emflux.png)](http://travis-ci.org/ilkkao/ember-cli-emflux)
+
 ## Installation
 
 `npm install --save-dev ember-cli-emflux`
 
-or 
+or
 
 `ember install ember-cli-emflux`
 
