@@ -50,7 +50,7 @@ export default Ember.Object.extend({
 
         try {
             window.localStorage.setItem(this.get('name'), JSON.stringify(data));
-            Ember.Logger.info('[${name}-store] Snapshot saved.');
+            Ember.Logger.info(`[${name}-store] Snapshot saved.`);
         } catch (e) {
             Ember.Logger.info(`[${name}-store] Failed to save snapshot, error: ${e}`);
         }
