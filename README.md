@@ -21,9 +21,12 @@ import Ember from 'ember';
 import { dispatch } from 'emflux/dispatcher';
 
 export default Ember.Component.extend({
+  // Get (read) access to all stores
   stores: Ember.inject.service(),
 
+  // Expose posts collection from todos store
   posts: Ember.computed.oneWay('stores.todos.posts'),
+
   newPost: '',
 
   actions: {
@@ -53,13 +56,9 @@ import Ember from 'ember';
 import Store from 'emflux/store';
 
 export default Store.extend({
-  posts: null,
-
-  init() {
-    this._super();
-
-    this.set('posts', Ember.A([]));
-  },
+  // Posts collection, an array of post models. Stores are singletons, array doesn't
+  // need to be initialized in init().
+  posts: Ember.A([]),
 
   handleCreateTodo(params) {
     fetch('/users', {
@@ -67,6 +66,7 @@ export default Store.extend({
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ body: params.body }).then(function(response) {
         if (response.status === 200) {
+          // Server accepted the new post. Add it to the collection.
           this.get('posts').push(Ember.Object.create({ body: body}))
         }
       }
@@ -82,9 +82,13 @@ All modules in `/stores` directory are automatically instantiated and registered
 To get the most benefits from flux architecture in Ember app:
 
 - Don't add any logic to Ember controllers.
-- Don't set any models in Ember routes.
+- Don't set any models in Ember routes. Instead access models through `stores` service that is available for all components. Other objects (including other stores) can access a store using dispatcher `getStore` function.
 - Use Ember actions only between child and parent component when no other component or server doesn't need to know about it. In practice you probably need Ember actions rarely.
-- Don't mutate store data in components (D'oh!)
+- Don't mutate store data in components (D'oh!) Only event handlers in stores are allowed to mutate store models.
+
+## Status
+
+This library has been recently extracted from a sizeable Ember app. For the time being, before 1.0.0 release, API should be considered unstable between releases.
 
 ## API
 
