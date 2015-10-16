@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/ilkkao/ember-cli-emflux.git"
   },
+  "bugs": {
+    "url": "https://github.com/ilkkao/ember-cli-emflux/issues"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -40,6 +43,12 @@
     "ember-try": "0.0.6"
   },
   "keywords": [
+    "flux",
+    "architecture",
+    "dataflow",
+    "action",
+    "event",
+    "data",
     "ember-addon"
   ],
   "dependencies": {
