@@ -25,8 +25,11 @@ export function dispatch(type, data = {}, acceptCb = noopCb, rejectCb = noopCb) 
         if (storeObj[handler]) {
             consumed = true;
 
-            let result = storeObj[handler].call(storeObj, data, acceptCb, rejectCb);
-            Ember.Logger.info(`[${store.name}-store] Consumed action ${type}.`);
+            let noLog = storeObj[handler].call(storeObj, data, acceptCb, rejectCb);
+
+            if (!noLog) {
+                Ember.Logger.info(`[${store.name}-store] Consumed action ${type}.`);
+            }
         }
     }
 
