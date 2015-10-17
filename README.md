@@ -56,14 +56,14 @@ import Ember from 'ember';
 import Store from 'emflux/store';
 
 export default Store.extend({
-  // Posts collection, an array of post models. Stores are singletons, array doesn't
-  // need to be initialized in init().
+  // Posts collection, an array of post models. Stores are singletons,
+  // array doesn't need to be initialized in init().
   posts: Ember.A([]),
 
   handleCreateTodo(params) {
     fetch('/users', {
       method: 'post',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ body: params.body }).then(function(response) {
         if (response.status === 200) {
           // Server accepted the new post. Add it to the collection.
@@ -77,7 +77,7 @@ export default Store.extend({
 
 All modules in `/stores` directory are automatically instantiated and registered as store object singletons when the Ember app starts.
 
-`dispatch()` will call matching handler functions from all stores. `ADD_ARTICLE_COMMENT` event is handled by `handleAddArticleEvent` method.
+`dispatch()` will call matching handler functions from all stores. For example, `ADD_ARTICLE_COMMENT` event is handled by `handleAddArticleEvent` method.
 
 To get the most benefits from flux architecture in Ember app:
 
@@ -129,6 +129,14 @@ none
 ##### Return value
 
 An array containing JavaScript objects with two keys, `name` (string) and `store` (reference to singleton).
+
+## Serialization and snapshotting
+
+*This is an experimental feature.*
+
+If a store implements both `toJSON()` and `fromJSON(object)` methods, emflux will enable snapshotting. `toJSON` method gets then called once in a minute. Object it returns is run through JSON.stringify() and saved to a local storage. Then later when the app is restarted, emflux will fetch the saved local storage snapshot and pass JSON parsed object to `fromJSON()` which then restores the store state. The data you want to persist is defined by the `toJSON()` method, it can be whole or partial store state.
+
+Currently this feature can be used to make the app to start faster.
 
 ## Running Tests
 
