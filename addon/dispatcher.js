@@ -76,10 +76,10 @@ function init() {
 
         dispatcherOnline = true;
 
-        for (let action of pendingActions) {
+        let action;
+
+        while (action = pendingActions.shift()) {
             dispatch(action.type, action.data, action.acceptCb, action.rejectCb);
         }
-
-        pendingActions.clear();
     }
 }
