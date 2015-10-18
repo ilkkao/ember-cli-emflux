@@ -56,7 +56,9 @@ function init() {
     for (let module of Object.keys(require.entries)) {
         let [ firstLevel, secondLevel, thirdLevel ] = module.split('/');
 
-        if (secondLevel === 'stores') {
+        // TODO: Is there a way to detect we are running unit test and only then activate
+        // fixture stores?
+        if (secondLevel === 'stores' || module.match(/^dummy\/tests\/unit\/stores\/[a-z0-9]+$/)) {
             let storeClass = require(module)['default'];
 
             if (!storeClass || typeof storeClass.create !== "function") {

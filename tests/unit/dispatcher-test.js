@@ -1,14 +1,15 @@
-/* jshint expr:true */
-
 import { expect } from 'chai';
-import { beforeEach, describe, it } from 'mocha';
+import { describe, it } from 'mocha';
 
-describe('dispatcher', function() {
-    beforeEach(function() {
-        console.log('testing');
-    });
+import fixtureStore1 from './stores/fixture1'; // jshint unused:false
+import fixtureStore2 from './stores/fixture2'; // jshint unused:false
+import fixtureStore3 from './stores/fixture3'; // jshint unused:false
 
-    it('two is two', function() {
-        expect(2).to.equal(2);
+import { getAllStores } from 'emflux/dispatcher';
+
+describe('dispatcher init', function() {
+    it('all stores are instantiated', function() {
+        let stores = getAllStores();
+        expect(stores.length).to.equal(3);
     });
 });
