@@ -86,15 +86,19 @@ To get the most benefits from flux architecture in Ember app:
 - Use Ember actions only between child and parent component when no other component or server doesn't need to know about it. In practice you probably need Ember actions rarely.
 - Don't mutate store data in components (D'oh!) Only event handlers in stores are allowed to mutate store models.
 
+An example store structure of a real-world Ember app is [available](https://github.com/ilkkao/mas/tree/master/client/app/stores)
+
 ## Status
 
-This library has been recently extracted from a sizeable Ember app. For the time being, before 1.0.0 release, API should be considered unstable between releases.
+This library has been recently extracted from [a sizeable Ember app](https://github.com/ilkkao/mas). For the time being, before 1.0.0 release, API should be considered unstable between releases.
 
 ## API
 
 ### dispatcher:
 
 #### ```dispatch(name, params, acceptCb, rejectCb)```
+
+Dispatch an event that stores can process.
 
 ##### Parameters
 
@@ -111,6 +115,8 @@ This library has been recently extracted from a sizeable Ember app. For the time
 none
 
 #### ```getStore(name)```
+
+Get a store singleton object. Note that `getStore()` can't be called from other store's `init()` as initialization order of the stores is not guaranteed.
 
 ##### Parameters
 
