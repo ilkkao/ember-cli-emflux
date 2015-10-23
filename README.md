@@ -82,8 +82,9 @@ All modules in `/stores` directory are automatically instantiated and registered
 To get the most benefits from flux architecture in Ember app:
 
 - Don't add any logic to Ember controllers.
-- Don't set any models in Ember routes. Instead only dispatch route change event from them. This event should update current route state that is kept in one of the stores. Then access models through `stores` service that is available for all components. Other objects (including other stores) can access a store using dispatcher `getStore` function.
-- Use Ember actions only between child and parent component when no other component or server doesn't need to know about it. In practice you probably need Ember actions rarely.
+- Don't set any models in Ember routes. Instead only dispatch route change event from them. This event should update current route state that is kept in one of the stores. Additionally route template should just speficy the root component for the route. Then access models through `stores` service that is available for all components.
+- Use dispatcher `getStore` function to access stores from objects that are not components. `getStore` also allows a store to read data from another store.
+- Use Ember action only between child and parent component when no other component or server doesn't need to know about it. In practice you probably need Ember actions rarely.
 - Don't mutate store data in components (D'oh!) Only event handlers in stores are allowed to mutate store models.
 
 An example store structure of a real-world Ember app is [available](https://github.com/ilkkao/mas/tree/master/client/app/stores)
