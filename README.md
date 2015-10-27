@@ -149,3 +149,7 @@ Currently this feature can be used to make the app to start faster.
 
 * `ember test`
 * `ember test --server`
+
+## Todo
+
+* Consider of adding action creator module
