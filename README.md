@@ -91,7 +91,9 @@ An example store structure of a real-world Ember app is [available](https://gith
 
 ## Status
 
-This library has been recently extracted from [a sizeable Ember app](https://github.com/ilkkao/mas). For the time being, before 1.0.0 release, API should be considered unstable between releases.
+This library has been recently extracted from [a sizeable Ember app](https://github.com/ilkkao/mas). More background information is available in this [blog post](http://iao.fi/blog/emflux).
+
+For the time being, before 1.0.0 release, API should be considered unstable between releases.
 
 ## API
 
