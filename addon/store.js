@@ -30,8 +30,8 @@ export default Ember.Object.extend({
                 return false;
             }
 
-            if (data.userId !== this.get('userId') || data.version !== 1) {
-                Ember.Logger.info(`[${name}-store] Snapshot corrupted.`);
+            if (!data.version) {
+                Ember.Logger.info(`[${name}-store] Snapshot corrupted, version property missing`);
                 window.localStorage.removeItem('data');
                 return false;
             }
